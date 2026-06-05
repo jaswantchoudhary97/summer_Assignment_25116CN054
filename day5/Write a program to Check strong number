@@ -1,0 +1,30 @@
+#include <stdio.h>
+long long calculateFactorial(int digit) {
+    long long fact = 1;
+    for (int i = 1; i <= digit; i++) {
+        fact *= i;
+    }
+    return fact;
+}
+int main() {
+    int number, originalNumber, lastDigit;
+    long long sum = 0;
+    printf("Enter an integer to check: ");
+    if (scanf("%d", &number) != 1) {
+        printf("Invalid input.\n");
+        return 1;
+    }
+    originalNumber = number;
+    while (number > 0) {
+        lastDigit = number % 10;
+        sum += calculateFactorial(lastDigit);
+        number = number / 10;
+    }
+    if (sum == originalNumber) {
+        printf("%d is a Strong Number.\n", originalNumber);
+    } else {
+        printf("%d is NOT a Strong Number.\n", originalNumber);
+    }
+
+    return 0;
+}
