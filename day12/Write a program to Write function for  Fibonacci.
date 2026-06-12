@@ -1,0 +1,23 @@
+#include <stdio.h>
+void printFibonacci(int terms);
+int main() {
+    int numTerms;
+    printf("Enter the number of terms: ");
+    if (scanf("%d", &numTerms) != 1 || numTerms <= 0) {
+        printf("Please enter a valid positive integer.\n");
+        return 1;
+    }
+    printf("Fibonacci Series up to %d terms: ", numTerms);
+    printFibonacci(numTerms);
+    return 0;
+}
+void printFibonacci(int terms) {
+    long long first = 0, second = 1, next;
+    for (int i = 0; i < terms; i++) {
+        printf("%lld ", first);
+        next = first + second;
+        first = second;
+        second = next;
+    }
+    printf("\n");
+}
