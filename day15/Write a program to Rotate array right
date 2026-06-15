@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+void rightRotate(int arr[], int n, int rotations) {
+    if (n <= 0) return;
+    rotations = rotations % n;
+    if (rotations == 0) return;
+    int temp[rotations];
+    for (int i = 0; i < rotations; i++) {
+        temp[i] = arr[n - rotations + i];
+    }
+    for (int i = n - 1; i >= rotations; i--) {
+        arr[i] = arr[i - rotations];
+    }
+    for (int i = 0; i < rotations; i++) {
+        arr[i] = temp[i];
+    }
+}
+int main() {
+    int n, rotations;
+    printf("Enter number of elements in array: ");
+    if (scanf("%d", &n) != 1 || n <= 0) {
+        printf("Invalid size. Must be a positive integer.\n");
+        return 1;
+    }
+    int arr[n];
+    printf("Enter %d integers: ", n);
+    for (int i = 0; i < n; i++) {
+        if (scanf("%d", &arr[i]) != 1) {
+            printf("Invalid input. Please enter integers only.\n");
+            return 1;
+        }
+    }
+    printf("Enter number of positions to rotate right: ");
+    if (scanf("%d", &rotations) != 1 || rotations < 0) {
+        printf("Invalid rotation count. Must be a non-negative integer.\n");
+        return 1;
+    }
+    rightRotate(arr, n, rotations);
+    printf("Array after right rotation: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    return 0;
+}
