@@ -1,0 +1,39 @@
+#include <stdio.h>
+int isPresent(int element, int res[], int resSize) {
+    for (int i = 0; i < resSize; i++) {
+        if (res[i] == element) {
+            return 1;
+        }
+    }
+    return 0;
+}
+int findUnion(int arr1[], int size1, int arr2[], int size2, int res[]) {
+    int resSize = 0;
+    for (int i = 0; i < size1; i++) {
+        if (!isPresent(arr1[i], res, resSize)) {
+            res[resSize] = arr1[i];
+            resSize++;
+        }
+    }
+    for (int i = 0; i < size2; i++) {
+        if (!isPresent(arr2[i], res, resSize)) {
+            res[resSize] = arr2[i];
+            resSize++;
+        }
+    }
+    return resSize;
+}
+int main() {
+    int arr1[] = {1, 2, 3, 2, 1};
+    int arr2[] = {3, 2, 4, 5, 3};
+    int size1 = sizeof(arr1) / sizeof(arr1[0]);
+    int size2 = sizeof(arr2) / sizeof(arr2[0]);
+    int res[size1 + size2]; 
+    int resSize = findUnion(arr1, size1, arr2, size2, res);
+    printf("Union of the two arrays: ");
+    for (int i = 0; i < resSize; i++) {
+        printf("%d ", res[i]);
+    }
+    printf("\n");
+    return 0;
+}
