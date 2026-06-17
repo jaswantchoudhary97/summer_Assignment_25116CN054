@@ -1,0 +1,54 @@
+#include <stdio.h>
+int isDuplicate(int arr[], int size, int element) {
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == element) {
+            return 1;
+        }
+    }
+    return 0;
+}
+int findIntersection(int arr1[], int size1, int arr2[], int size2, int result[]) {
+    int k = 0;
+    for (int i = 0; i < size1; i++) {
+        for (int j = 0; j < size2; j++) {
+            if (arr1[i] == arr2[j]) {
+                if (!isDuplicate(result, k, arr1[i])) {
+                    result[k] = arr1[i];
+                    k++;
+                }
+                break;
+            }
+        }
+    }
+    return k;
+}
+int main() {
+    int size1, size2;
+    printf("Enter the number of elements for Array 1: ");
+    scanf("%d", &size1);
+    int arr1[size1];
+    printf("Enter %d elements for Array 1:\n", size1);
+    for (int i = 0; i < size1; i++) {
+        scanf("%d", &arr1[i]);
+    }
+    printf("\nEnter the number of elements for Array 2: ");
+    scanf("%d", &size2);
+    int arr2[size2];
+    printf("Enter %d elements for Array 2:\n", size2);
+    for (int i = 0; i < size2; i++) {
+        scanf("%d", &arr2[i]);
+    }
+    int maxIntersectionSize = (size1 < size2) ? size1 : size2;
+    int result[maxIntersectionSize];
+    int intersectionSize = findIntersection(arr1, size1, arr2, size2, result);
+    printf("\nIntersection of the two arrays: ");
+    if (intersectionSize == 0) {
+        printf("No common elements found.");
+    } else {
+        for (int i = 0; i < intersectionSize; i++) {
+            printf("%d ", result[i]);
+        }
+    }
+    printf("\n");
+    return 0;
+}
