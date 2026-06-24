@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+void findLongestWord(const char *str) {
+    int maxLen = 0;
+    int currentLen = 0;
+    int maxStartIndex = 0;
+    int currentStartIndex = 0;
+    int i = 0;
+    while (str[i] != '\0') {
+        while (str[i] != '\0' && (isspace((unsigned char)str[i]) || ispunct((unsigned char)str[i]))) {
+            i++;
+        }
+        currentStartIndex = i;
+        currentLen = 0;
+        while (str[i] != '\0' && !isspace((unsigned char)str[i]) && !ispunct((unsigned char)str[i])) {
+            currentLen++;
+            i++;
+        }
+        if (currentLen > maxLen) {
+            maxLen = currentLen;
+            maxStartIndex = currentStartIndex;
+        }
+    }
+    printf("Longest word length: %d\n", maxLen);
+    printf("Longest word: %.*s\n", maxLen, &str[maxStartIndex]);
+}
+int main() {
+    char sentence[200];
+    printf("Enter a sentence: ");
+    if (fgets(sentence, sizeof(sentence), stdin) != NULL) {
+        sentence[strcspn(sentence, "\n")] = '\0';   
+        findLongestWord(sentence);
+    }
+    return 0;
+}
