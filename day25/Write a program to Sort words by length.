@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_WORDS 100
+#define MAX_LENGTH 50
+int compare_lengths(const void *a, const void *b) {
+    size_t len_a = strlen((const char *)a);
+    size_t len_b = strlen((const char *)b);
+    return (len_a > len_b) - (len_a < len_b);
+}
+int main() {
+    int total_words;
+    char words[MAX_WORDS][MAX_LENGTH];
+    printf("Enter the number of words to sort: ");
+    if (scanf("%d", &total_words) != 1 || total_words <= 0 || total_words > MAX_WORDS) {
+        printf("Invalid number of words.\n");
+        return 1;
+    }
+    printf("Enter %d words:\n", total_words);
+    for (int i = 0; i < total_words; i++) {
+        scanf("%s", words[i]);
+    }
+    qsort(words, total_words, sizeof(words[0]), compare_lengths);
+    printf("\nWords sorted by length:\n");
+    for (int i = 0; i < total_words; i++) {
+        printf("%s\n", words[i]);
+    }
+    return 0;
+}
