@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#define MAX_QUESTION_LEN 256
+#define MAX_OPTION_LEN 64
+#define TOTAL_QUESTIONS 3
+typedef struct {
+    char question_text[MAX_QUESTION_LEN];
+    char options[4][MAX_OPTION_LEN];
+    char correct_option;
+} QuizQuestion;
+void run_quiz(QuizQuestion quiz[], int total);
+void display_header();
+int main() {
+    QuizQuestion quiz[TOTAL_QUESTIONS] = {
+        {
+            "Which data type is used to store text in C?",
+            {"A. int", "B. float", "C. char", "D. double"},
+            'C'
+        },
+        {
+            "Which of the following is the correct format specifier for a pointer address?",
+            {"A. %d", "B. %p", "C. %s", "D. %f"},
+            'B'
+        },
+        {
+            "What is the return type of the 'main' function in a standard C program?",
+            {"A. void", "B. char", "C. float", "D. int"},
+            'D'
+        }
+    };
+    int choice;
+    do {
+        display_header();
+        printf("1. Start Quiz\n");
+        printf("2. Exit\n");
+        printf("Enter your choice (1-2): ");
+        if (scanf("%d", &choice) != 1) {
+            printf("\nInvalid input. Exiting application.\n");
+            break;
+        }
+        switch (choice) {
+            case 1:
+                run_quiz(quiz, TOTAL_QUESTIONS);
+                break;
+            case 2:
+                printf("\nThank you for playing! Goodbye.\n");
+                break;
+            default:
+                printf("\nInvalid choice. Please select 1 or 2.\n");
+        }
+    } while (choice != 2);
+    return 0;
+}
+void run_quiz(QuizQuestion quiz[], int total) {
+    int score = 0;
+    char user_answer;
+    printf("\n--- QUIZ STARTED ---\n");
+    for (int i = 0; i < total; i++) {
+        printf("\nQuestion %d: %s\n", i + 1, quiz[i].question_text);
+        for (int j = 0; j < 4; j++) {
+            printf("%s\n", quiz[i].options[j]);
+        }
+        printf("Your Answer (A, B, C, or D): ");
+        scanf(" %c", &user_answer); 
+        user_answer = toupper(user_answer);
+        if (user_answer == quiz[i].correct_option) {
+            printf("Result: Correct!\n");
+            score++;
+        } else {
+            printf("Result: Incorrect. The correct answer was %c.\n", quiz[i].correct_option);
+        }
+    }
+    float percentage = ((float)score / total) * 100;
+    printf("\n--- QUIZ COMPLETED ---");
+    printf("\nFinal Score: %d out of %d", score, total);
+    printf("\nPercentage Secured: %.2f%%\n\n", percentage);
+}
+void display_header() {
+    printf("=================================\n");
+    printf("     WELCOME TO THE C QUIZ       \n");
+    printf("=================================\n");
+}
