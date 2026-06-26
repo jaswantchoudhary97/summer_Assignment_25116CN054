@@ -1,0 +1,118 @@
+#include <stdio.h>
+#include <stdbool.h>
+// Default configuration constants
+#define DEFAULT_PIN 1234
+#define INITIAL_BALANCE 5000.00
+#define MAX_PIN_ATTEMPTS 3
+// Function prototypes
+void displayMenu();
+void checkBalance(double balance);
+double depositMoney(double balance);
+double withdrawMoney(double balance);
+int main() {
+    int enteredPin;
+    int pinAttempts = 0;
+    bool isAuthenticated = false;
+    int choice;
+    double accountBalance = INITIAL_BALANCE;
+    printf("===========================================\n");
+    printf("       WELCOME TO THE ATM SIMULATION       \n");
+    printf("===========================================\n");
+    // Pin Authentication Loop
+    while (pinAttempts < MAX_PIN_ATTEMPTS) {
+        printf("\nPlease enter your 4-digit PIN: ");
+        if (scanf("%d", &enteredPin) != 1) {
+            printf("Invalid input type. Please enter numbers only.\n");
+            while (getchar() != '\n'); // Clear input buffer
+            pinAttempts++;
+            continue;
+        }
+        if (enteredPin == DEFAULT_PIN) {
+            isAuthenticated = true;
+            break;
+        } else {
+            pinAttempts++;
+            printf("Incorrect PIN. Attempts remaining: %d\n", MAX_PIN_ATTEMPTS - pinAttempts);
+        }
+    }
+    // Terminate if authentication fails after maximum attempts
+    if (!isAuthenticated) {
+        printf("\nToo many incorrect attempts. Your card has been blocked.\n");
+        printf("Please contact your bank branch. Goodbye!\n");
+        return 0;
+    }
+    // Main Transaction Loop
+    do {
+        displayMenu();
+        printf("Enter your transaction choice (1-4): ");
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input. Please enter a number.\n");
+            while (getchar() != '\n'); 
+            choice = 0; // Trigger default invalid choice state
+            continue;
+        }
+        switch (choice) {
+            case 1:
+                checkBalance(accountBalance);
+                break;
+            case 2:
+                accountBalance = depositMoney(accountBalance);
+                break;
+            case 3:
+                accountBalance = withdrawMoney(accountBalance);
+                break;
+            case 4:
+                printf("\nThank you for using our ATM services. Have a great day!\n");
+                break;
+            default:
+                printf("\nInvalid option selected. Please try again.\n");
+        }
+    } while (choice != 4);
+
+    return 0;
+}
+// Displays the main user options interface
+void displayMenu() {
+    printf("\n-------------------------------------------\n");
+    printf("                ATM MENU                   \n");
+    printf("-------------------------------------------\n");
+    printf("1. Check Balance\n");
+    printf("2. Deposit Cash\n");
+    printf("3. Withdraw Cash\n");
+    printf("4. Exit / Quit Session\n");
+    printf("-------------------------------------------\n");
+}
+// Handles and displays the current account balance
+void checkBalance(double balance) {
+    printf("\n>>> Your current balance is: $%.2f\n", balance);
+}
+// Processes cash deposit transactions
+double depositMoney(double balance) {
+    double depositAmount;
+    printf("\nEnter the amount you want to deposit: $");
+    scanf("%lf", &depositAmount);
+    if (depositAmount <= 0) {
+        printf("Transaction Failed: Deposit amount must be greater than zero.\n");
+    } else {
+        balance += depositAmount;
+        printf("Success: $%.2f deposited successfully.\n", depositAmount);
+        printf("New balance: $%.2f\n", balance);
+    }
+    return balance;
+}
+// Processes cash withdrawal transactions with balance validation
+double withdrawMoney(double balance) {
+    double withdrawAmount;
+    printf("\nEnter the amount you want to withdraw: $");
+    scanf("%lf", &withdrawAmount);
+    if (withdrawAmount <= 0) {
+        printf("Transaction Failed: Withdrawal amount must be greater than zero.\n");
+    } else if (withdrawAmount > balance) {
+        printf("Transaction Failed: Insufficient funds available.\n");
+    } else {
+        balance -= withdrawAmount;
+        printf("Success: Please collect your cash of $%.2f\n", withdrawAmount);
+        printf("Remaining balance: $%.2f\n", balance);
+    }
+    return balance;
+}
